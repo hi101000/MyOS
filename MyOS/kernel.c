@@ -12,6 +12,7 @@
 void clear_screen();
 unsigned int print(char *message, unsigned int line);
 void update_cursor(int row, int col);
+void k_delay(int seconds);
 
 kmain(){/*
   char* vidmem=(char*)0xb8000;
@@ -23,8 +24,8 @@ kmain(){/*
   vidmem[5]=GREEN;*/
   clear_screen();
   print("Hello, World!                     ", 0);
+  k_delay(5);
   clear_screen();
-  print("hi", 1);
 }
 
 int abs(int x){
@@ -74,3 +75,12 @@ void clear_screen() // clear the entire text screen
 		i++;
 	};
 };
+
+void k_delay(int seconds){
+	unsigned long int count=33333333,i,j;
+	unsigned long long int instruct=0;
+	
+	for(i=0;i<seconds;i++){
+	    for(j=0;j<count;j++){instruct++;};
+	}
+}
