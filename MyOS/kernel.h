@@ -10,6 +10,7 @@ typedef const char* str;
 #define elif else if
 #define VGA_ADDRESS 0xB8000
 #define BUFSIZE 2200
+#define infinite while(1)
 
 uint16* vga_buffer;
 

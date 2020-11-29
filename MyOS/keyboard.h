@@ -84,4 +84,6 @@
 #define KEY_UP 0x48
 
 
+
+char get_ascii_char(int code);
 #endif

@@ -10,9 +10,9 @@
 #include "kernel.h"
 
 
-#define WHITE 0x07 // white on black text
-#define RED   0x04 // red on black text
-#define GREEN 0x02 // green on black text
+#define WHITE 0x07 
+#define RED   0x04 
+#define GREEN 0x02 
 
 void clear_screen();
 unsigned int print(char *message, unsigned int line);
@@ -24,6 +24,8 @@ void print_int(int toprint);
 char* input(char* prompt, int line);
 void ftoa(double num, char *number);
 void test_input();
+void print_char(char toprint, int idx);
+char get_input_keycode();
 
 long double add(long double x, long double y){return x+y;}
 long double sub(long double x, long double y){return x-y;}
@@ -41,11 +43,6 @@ kmain(){
   print_int(12);
   k_delay(12);
   clear_screen();
-  while(1){
-    print("$>", line);
-    test_input();
-    line++;
-    }
 }
 
 int abs(int x){
@@ -222,56 +219,7 @@ char get_input_keycode()
   }
   return ch;
 }
-
-/*
-keep the cpu busy for doing nothing(nop)
-so that io port will not be processed by cpu
-here timer can also be used, but lets do this in looping counter
-*/
-void wait_for_io(uint32 timer_count)
-{
-  while(1){
-    asm volatile("nop");
-    timer_count--;
-    if(timer_count <= 0)
-      break;
-    }
-}
-
-void sleep(uint32 timer_count)
-{
-  wait_for_io(timer_count);
-}
-
-char get_ascii_char(int code){
-  if (code==KEY_A){
-    return 'a';
-  }
-  elif(code==KEY_B){
-    return 'b';
-  }
-  elif(code==KEY_C){
-    return 'c';
-  }
-}
-
-void test_input()
-{
-  char ch = 0;
-  char keycode = 0;
-  do{
-    keycode = get_input_keycode();
-    if(keycode == KEY_ENTER){
-      print("\n", 0);
-    }else{
-      ch = get_ascii_char(keycode);
-      print(ch, 1);
-    }
-    sleep(0x02FFFFFF);
-  }while(ch > 0);
-}
-
-
+void print_char(char toprint, int idx){vga_buffer[idx] = vga_entry(toprint, WHITE, BLACK);}
 void kernel_entry()
 {
   //first init vga with fore & back colors
