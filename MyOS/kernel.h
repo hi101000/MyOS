@@ -7,7 +7,7 @@ typedef unsigned int uint32;
 typedef char* string;
 typedef const char* str;
 
-
+#define elif else if
 #define VGA_ADDRESS 0xB8000
 #define BUFSIZE 2200
 

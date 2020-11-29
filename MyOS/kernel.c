@@ -23,6 +23,7 @@ void kernel_entry();
 void print_int(int toprint);
 char* input(char* prompt, int line);
 void ftoa(double num, char *number);
+void test_input();
 
 long double add(long double x, long double y){return x+y;}
 long double sub(long double x, long double y){return x-y;}
@@ -30,13 +31,21 @@ long double mul(long double x, long double y){return x*y;}
 long double div(long double x, long double y){return x/y;}
 
 kmain(){
+  int line=0;
   kernel_entry();
   k_delay(5);
   clear_screen();
-  print("HI, World!                        ", 0);
+  print("HI, World!                        ", line);
   k_delay(5);
   clear_screen();
   print_int(12);
+  k_delay(12);
+  clear_screen();
+  while(1){
+    print("$>", line);
+    test_input();
+    line++;
+    }
 }
 
 int abs(int x){
@@ -187,6 +196,81 @@ void print_int(int toprint){
 	itoa(toprint, willprint);
 	print(willprint, 0);
 }
+
+
+
+
+
+uint8 inb(uint16 port)
+{
+  uint8 ret;
+  asm volatile("inb %1, %0" : "=a"(ret) : "d"(port));
+  return ret;
+}
+
+void outb(uint16 port, uint8 data)
+{
+  asm volatile("outb %0, %1" : "=a"(data) : "d"(port));
+}
+
+char get_input_keycode()
+{
+  char ch = 0;
+  while((ch = inb(KEYBOARD_PORT)) != 0){
+    if(ch > 0)
+      return ch;
+  }
+  return ch;
+}
+
+/*
+keep the cpu busy for doing nothing(nop)
+so that io port will not be processed by cpu
+here timer can also be used, but lets do this in looping counter
+*/
+void wait_for_io(uint32 timer_count)
+{
+  while(1){
+    asm volatile("nop");
+    timer_count--;
+    if(timer_count <= 0)
+      break;
+    }
+}
+
+void sleep(uint32 timer_count)
+{
+  wait_for_io(timer_count);
+}
+
+char get_ascii_char(int code){
+  if (code==KEY_A){
+    return 'a';
+  }
+  elif(code==KEY_B){
+    return 'b';
+  }
+  elif(code==KEY_C){
+    return 'c';
+  }
+}
+
+void test_input()
+{
+  char ch = 0;
+  char keycode = 0;
+  do{
+    keycode = get_input_keycode();
+    if(keycode == KEY_ENTER){
+      print("\n", 0);
+    }else{
+      ch = get_ascii_char(keycode);
+      print(ch, 1);
+    }
+    sleep(0x02FFFFFF);
+  }while(ch > 0);
+}
+
 
 void kernel_entry()
 {
