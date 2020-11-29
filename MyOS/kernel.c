@@ -21,6 +21,8 @@ void k_delay(int seconds);
 void whileloop();
 void kernel_entry();
 void print_int(int toprint);
+char* input(char* prompt, int line);
+void ftoa(double num, char *number);
 
 long double add(long double x, long double y){return x+y;}
 long double sub(long double x, long double y){return x-y;}
@@ -71,6 +73,12 @@ unsigned int print(char *message, unsigned int line) // the message and then the
 
 	return(1);
 };
+
+char* input(char* prompt, int line){
+	print(prompt, line);
+	char* user_input;
+	return user_input;
+}
 
 void clear_screen() // clear the entire text screen
 {
@@ -169,6 +177,7 @@ void itoa(int num, char *number)
   }
 }
 
+void ftoa(double num, char *number){}
 //print string by calling print_char
 
 //print int by converting it into string
@@ -197,4 +206,5 @@ void kernel_entry()
   vga_buffer[8] = vga_entry('r', WHITE, BLACK);
   vga_buffer[9] = vga_entry('l', WHITE, BLACK);
   vga_buffer[10] = vga_entry('d', WHITE, BLACK);
+  vga_buffer[11] = vga_entry('!', WHITE, BLACK);
 }
