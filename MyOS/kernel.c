@@ -14,6 +14,7 @@
 #define RED   0x04 
 #define GREEN 0x02 
 
+int test=0;
 void clear_screen();
 unsigned int print(char *message, unsigned int line);
 void update_cursor(int row, int col);
@@ -21,7 +22,7 @@ void k_delay(int seconds);
 void whileloop();
 void kernel_entry();
 void print_int(int toprint);
-char* input(char* prompt, int line);
+char* u_input(char* prompt, int line);
 void ftoa(double num, char *number);
 void test_input();
 void print_char(char toprint, int idx);
@@ -42,7 +43,6 @@ kmain(){
   clear_screen();
   print_int(12);
   k_delay(12);
-  clear_screen();
 }
 
 int abs(int x){
@@ -80,10 +80,9 @@ unsigned int print(char *message, unsigned int line) // the message and then the
 	return(1);
 };
 
-char* input(char* prompt, int line){
+char* u_input(char* prompt, int line){
 	print(prompt, line);
-	char* user_input;
-	return user_input;
+	test=1;
 }
 
 void clear_screen() // clear the entire text screen
@@ -100,7 +99,7 @@ void clear_screen() // clear the entire text screen
 };
 
 void k_delay(int seconds){
-	unsigned long int count=99999999,i,j;
+	unsigned long int count=11111110,i,j;
 	unsigned long long int instruct=0;
 	
 	for(i=0;i<seconds;i++){
@@ -216,4 +215,11 @@ void kernel_entry()
   vga_buffer[11] = vga_entry('!', WHITE, BLACK);
   vga_buffer[12] = vga_entry('$', GREEN, BLACK);
   vga_buffer[13] = vga_entry('>', GREEN, BLACK);
+  vga_buffer[14] = vga_entry(' ', GREEN, BLACK);
+  while(test==0){
+	k_delay(1);
+	vga_buffer[14]=vga_entry(' ', GREEN, WHITE);
+	k_delay(1);
+	vga_buffer[14]=vga_entry(' ', GREEN, BLACK);
+  }
 }
