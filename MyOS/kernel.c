@@ -42,7 +42,6 @@ kmain(){
   k_delay(5);
   clear_screen();
   print_int(12);
-  k_delay(12);
 }
 
 int abs(int x){
