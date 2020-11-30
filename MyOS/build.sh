@@ -7,5 +7,5 @@ mv kernel.bin MyOS/boot/kernel.bin
 grub-mkrescue -o myos.iso MyOS/
 git stage kernel.c kernel.h kernel.asm myos.iso
 git commit kernel.c kernel.h kernel.asm build.sh myos.iso
-echo hi101000|git push
+git push
 clear
