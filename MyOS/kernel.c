@@ -35,13 +35,12 @@ long double div(long double x, long double y){return x/y;}
 
 kmain(){
   int line=0;
-  kernel_entry();
-  k_delay(5);
   clear_screen();
   print("HI, World!                        ", line);
   k_delay(5);
   clear_screen();
   print_int(12);
+  kernel_entry();
 }
 
 int abs(int x){
